@@ -41,64 +41,58 @@ class _MainHomePageState extends State<MainHomePage> {
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Column(
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            setState(() {
-                              index = 0;
-                            });
-                          },
-                          icon: Icon(Icons.home, size: 30)),
-                      Text("Home")
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            index = 0;
+                          });
+                        },
+                        child: Column(children: [
+                          Icon(Icons.home, size: 30),
+                          Text("Home")
+                        ])),
                   ),
-                  Column(
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            setState(() {
-                              index = 1;
-                            });
-                          },
-                          icon: Icon(
-                            Icons.movie,
-                            size: 30,
-                          )),
-                      Text("Now Playing")
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            index = 1;
+                          });
+                        },
+                        child: Column(children: [
+                          Icon(Icons.movie, size: 30),
+                          Text("Now Playing")
+                        ])),
                   ),
-                  Column(
-                    children: [
-                      IconButton(
-                        onPressed: () {
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                        onTap: () {
                           setState(() {
                             index = 2;
                           });
                         },
-                        icon: Icon(
-                          Icons.favorite,
-                          size: 30,
-                        ),
-                      ),
-                      Text("Favorite")
-                    ],
+                        child: Column(children: [
+                          Icon(Icons.favorite, size: 30),
+                          Text("Favorite")
+                        ])),
                   ),
-                  Column(
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            setState(() {
-                              index = 3;
-                            });
-                          },
-                          icon: Icon(
-                            Icons.trending_up_sharp,
-                            size: 30,
-                          )),
-                      Text("Trending")
-                    ],
-                  )
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            index = 3;
+                          });
+                        },
+                        child: Column(children: [
+                          Icon(Icons.trending_up, size: 30),
+                          Text("Trending")
+                        ])),
+                  ),
                 ]),
           )),
     );
