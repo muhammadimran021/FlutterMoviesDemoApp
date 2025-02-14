@@ -38,4 +38,5 @@ class HomeScreenRepository {
 
     return TopRatedMoviesRootModel.fromJson(response.data);
   }
+
 }

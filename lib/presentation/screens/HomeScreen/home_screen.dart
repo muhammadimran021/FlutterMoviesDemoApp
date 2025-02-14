@@ -36,18 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      appBar: AppBar(
-        leading: Icon(Icons.menu),
-        backgroundColor: Colors.grey.shade300,
-        title: Text("Movies"),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: Icon(Icons.search),
-          )
-        ],
-      ),
-      backgroundColor: Colors.grey.shade300,
       body: MultiBlocProvider(
         providers: [
           BlocProvider.value(value: sliderBloc),
@@ -64,7 +52,6 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         SingleChildScrollView(
             child: Column(children: [
-
           textTitle("Discover"),
           _moviesSlider(),
           _titleAndShowMore("Top Rated", "Show More"),
