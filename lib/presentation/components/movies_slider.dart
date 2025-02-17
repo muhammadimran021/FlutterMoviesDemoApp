@@ -13,7 +13,7 @@ class MoviesSlider extends StatelessWidget {
       padding: const EdgeInsets.only(top: 20.0),
       child: CarouselSlider.builder(
         options: CarouselOptions(
-          height: 250,
+          height: 200,
           disableCenter: true,
           viewportFraction: 0.6,
           enlargeCenterPage: true,

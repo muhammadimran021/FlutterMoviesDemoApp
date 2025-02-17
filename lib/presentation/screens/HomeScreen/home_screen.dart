@@ -8,6 +8,7 @@ import 'package:my_movie_app/domain/use_cases/TopRatedMoviesUseCase.dart';
 import 'package:my_movie_app/presentation/components/movies_slider.dart';
 import 'package:my_movie_app/presentation/screens/HomeScreen/HomeScreenBloc.dart';
 import 'package:my_movie_app/presentation/screens/HomeScreen/HomeScreenStates.dart';
+import 'package:my_movie_app/presentation/screens/movie_detail_screen/MovieDetails.dart';
 
 import '../../components/MoviesListHorizontal.dart';
 
@@ -65,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _titleAndShowMore(String title, String showMoreText) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(left: 4.0, right: 10),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         textTitle(title),
         Padding(
@@ -103,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
         Text(
           text,
           style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),
+              fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black),
         ),
       ]),
     );
@@ -148,8 +149,18 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, state) {
       if (state is LoadedDiscoverMovies) {
         return SizedBox(
-          height: 265,
-          child: MoviesListHorizontal(moviesList: state.results!),
+          height: 210,
+          child: MoviesListHorizontal(
+            moviesList: state.results!,
+            onItemClick: (movieListItem) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MovieDetailsScreen(
+                            movieItem: movieListItem,
+                          )));
+            },
+          ),
         );
       }
       return Container();
@@ -160,8 +171,18 @@ class _HomeScreenState extends State<HomeScreen> {
     return BlocBuilder<PopularMoviesBloc, HomeState>(builder: (event, state) {
       if (state is LoadedPopularMovies) {
         return SizedBox(
-          height: 265,
-          child: MoviesListHorizontal(moviesList: state.results!),
+          height: 250,
+          child: MoviesListHorizontal(
+            moviesList: state.results!,
+            onItemClick: (movieListItem) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MovieDetailsScreen(
+                            movieItem: movieListItem,
+                          )));
+            },
+          ),
         );
       }
       return Container();

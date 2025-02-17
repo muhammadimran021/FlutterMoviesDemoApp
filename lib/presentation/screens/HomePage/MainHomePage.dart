@@ -51,7 +51,10 @@ class _MainHomePageState extends State<MainHomePage> {
                         },
                         child: Column(children: [
                           Icon(Icons.home, size: 30),
-                          Text("Home")
+                          Text(
+                            "Home",
+                            style: TextStyle(fontSize: 12),
+                          )
                         ])),
                   ),
                   Padding(
@@ -64,7 +67,10 @@ class _MainHomePageState extends State<MainHomePage> {
                         },
                         child: Column(children: [
                           Icon(Icons.movie, size: 30),
-                          Text("Now Playing")
+                          Text(
+                            "Now Playing",
+                            style: TextStyle(fontSize: 12),
+                          )
                         ])),
                   ),
                   Padding(
@@ -77,7 +83,10 @@ class _MainHomePageState extends State<MainHomePage> {
                         },
                         child: Column(children: [
                           Icon(Icons.favorite, size: 30),
-                          Text("Favorite")
+                          Text(
+                            "Favorite",
+                            style: TextStyle(fontSize: 12),
+                          )
                         ])),
                   ),
                   Padding(
@@ -90,7 +99,10 @@ class _MainHomePageState extends State<MainHomePage> {
                         },
                         child: Column(children: [
                           Icon(Icons.trending_up, size: 30),
-                          Text("Trending")
+                          Text(
+                            "Trending",
+                            style: TextStyle(fontSize: 12),
+                          )
                         ])),
                   ),
                 ]),

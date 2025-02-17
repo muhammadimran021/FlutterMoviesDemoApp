@@ -1,15 +1,202 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:my_movie_app/core/OverlayLoader.dart';
+import 'package:my_movie_app/data/models/TopRatedMoviesRootModel.dart';
+import 'package:my_movie_app/domain/use_cases/MovieCreditUseCase.dart';
+import 'package:my_movie_app/presentation/components/CrewListHorizontal.dart';
+import 'package:my_movie_app/presentation/screens/movie_detail_screen/MovieDetailBloc.dart';
+import 'package:my_movie_app/presentation/screens/movie_detail_screen/MovieDetailsState.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
-  const MovieDetailsScreen({super.key});
+  final Result? movieItem;
+
+  const MovieDetailsScreen({
+    super.key,
+    this.movieItem,
+  });
 
   @override
   State<MovieDetailsScreen> createState() => _MovieDetailsScreenState();
 }
 
 class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
+  late final MovieDetailBloc movieDetailBloc;
+
+  @override
+  void initState() {
+    movieDetailBloc = GetIt.instance<MovieDetailBloc>();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return SafeArea(
+        child: Scaffold(
+            body: BlocProvider(
+      create: (context) => movieDetailBloc,
+      child: _movieDetailedScreen(widget.movieItem!),
+    )));
+  }
+
+  Widget _movieDetailedScreen(Result movieItem) {
+    return Stack(
+      children: [
+        _coverImage(movieItem.backdropPath!),
+        _backButton(),
+        Padding(
+            padding: const EdgeInsets.only(top: 150.0, left: 10, right: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: Image.network(
+                          height: 100,
+                          width: 100,
+                          'https://image.tmdb.org/t/p/w500/${movieItem.posterPath!}',
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(child: CircularProgressIndicator());
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return Center(
+                                child: Icon(Icons.error, color: Colors.red));
+                          },
+                        )),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 10.0, top: 60, right: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 200,
+                            child: Text(
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              movieItem.title!,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Text("Rating: "),
+                              Icon(
+                                Icons.star,
+                                color: Colors.yellow,
+                              ),
+                              Text(movieItem.voteAverage.toString()),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("|"),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("Vote: ${movieItem.voteCount}")
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Text(
+                    "Overview",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                  ),
+                ),
+                Text(movieItem.overview.toString()),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Text(
+                    "Release Date: ${movieItem.releaseDate!.day}, ${movieItem.releaseDate!.month}, ${movieItem.releaseDate!.year} ",
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Cast & Crew",
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                _crewCast(movieItem)
+              ],
+            )),
+      ],
+    );
+  }
+
+  Widget _coverImage(String coverImage) {
+    return Image.network(
+      'https://image.tmdb.org/t/p/w500/$coverImage',
+      height: 200,
+      width: double.infinity,
+      fit: BoxFit.cover,
+      loadingBuilder: (context, child, loadingProgress) {
+        if (loadingProgress == null) return child;
+        return SizedBox(
+            height: 200, child: Center(child: CircularProgressIndicator()));
+      },
+      errorBuilder: (context, error, stackTrace) {
+        return SizedBox(
+            height: 200,
+            child: Center(child: Icon(Icons.error, color: Colors.red)));
+      },
+    );
+  }
+
+  Widget _backButton() {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30), color: Colors.white),
+          child: Icon(Icons.arrow_back)),
+    );
+  }
+
+  Widget _crewCast(Result movieItem) {
+    return BlocBuilder<MovieDetailBloc, MovieDetailState>(
+        buildWhen: (previousState, currentState) {
+      if (currentState is LoadingState) {
+        OverlayLoader.show(context);
+      } else {
+        OverlayLoader.hide();
+      }
+      return true;
+    }, builder: (context, state) {
+      if (state is InitialState) {
+        context.read<MovieDetailBloc>().add(MovieCreditsParams(
+            id: movieItem.id.toString(),
+            apiKey: "bd9a0f3aac2b3bb637d47a4ab5c5d388",
+            language: "us-en"));
+      } else if (state is LoadedState) {
+        return Flexible(
+          flex: 1,
+          child: CrewListHorizontal(castList: state.creditsRoodModel.cast!),
+        );
+      } else if (state is ErrorState) {
+        return Text(state.message);
+      }
+      return Container();
+    });
   }
 }
