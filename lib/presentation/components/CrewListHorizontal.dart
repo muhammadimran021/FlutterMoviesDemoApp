@@ -28,7 +28,10 @@ class CrewListHorizontal extends StatelessWidget {
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(80),
                 child: castList.profilePath == null
-                    ? Icon(Icons.not_interested,size: 80,)
+                    ? Icon(
+                        Icons.not_interested,
+                        size: 80,
+                      )
                     : Image.network(
                         height: 80,
                         width: 80,
@@ -49,6 +52,8 @@ class CrewListHorizontal extends StatelessWidget {
             child: Text(
               textAlign: TextAlign.center,
               castList.name.toString(),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontSize: 12,
               ),

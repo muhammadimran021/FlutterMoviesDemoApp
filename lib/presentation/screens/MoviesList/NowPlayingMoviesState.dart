@@ -6,6 +6,13 @@ class InitialState extends NowPlayingMoviesState {}
 
 class LoadingState extends NowPlayingMoviesState {}
 
+class SearchQueryChanges extends NowPlayingMoviesState{
+  final String query;
+
+  SearchQueryChanges({required this.query});
+
+}
+
 class ErrorState extends NowPlayingMoviesState {
   final String message;
 

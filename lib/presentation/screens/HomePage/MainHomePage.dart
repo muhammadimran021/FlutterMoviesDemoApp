@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_movie_app/presentation/screens/HomeScreen/home_screen.dart';
+import 'package:my_movie_app/presentation/screens/SearchPage/Search.dart';
 import 'package:my_movie_app/presentation/screens/movie_detail_screen/MovieDetails.dart';
 
 import '../MoviesList/NowPlayingMovies.dart';
@@ -24,9 +25,17 @@ class _MainHomePageState extends State<MainHomePage> {
             backgroundColor: Colors.grey.shade300,
             title: Text("Movies"),
             actions: [
-              Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: Icon(Icons.search),
+              GestureDetector(
+                onTap: () {
+                  showSearch(
+                      context: context,
+                      delegate: Search()
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Icon(Icons.search),
+                ),
               )
             ],
           ),
