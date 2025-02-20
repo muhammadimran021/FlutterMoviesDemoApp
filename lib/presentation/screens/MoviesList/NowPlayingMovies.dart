@@ -27,6 +27,13 @@ class _AllMoviesPageState extends State<AllMoviesPage> {
   }
 
   @override
+  void dispose() {
+    nowPlayingMoviesBloc.close();
+    print('Now playing bloc closed');
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => nowPlayingMoviesBloc,

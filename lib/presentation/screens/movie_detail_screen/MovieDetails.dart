@@ -34,6 +34,13 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   }
 
   @override
+  void dispose() {
+    movieDetailBloc.close();
+    movieCreditBloc.close();
+    print('bloc closed');
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
