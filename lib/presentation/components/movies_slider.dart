@@ -9,11 +9,14 @@ class MoviesSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
       child: CarouselSlider.builder(
         options: CarouselOptions(
-          height: 200,
+          height: screenHeight * 0.25,
           disableCenter: true,
           viewportFraction: 0.6,
           enlargeCenterPage: true,
