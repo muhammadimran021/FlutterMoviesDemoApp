@@ -40,6 +40,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
     print('bloc closed');
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -57,72 +58,78 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Stack(
-          children: [
-            _coverImage(movieItem.backdropPath!),
-            _backButton(),
-            Padding(
-              padding: const EdgeInsets.only(top: 150.0, left: 10, right: 10),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: Image.network(
-                        height: 100,
-                        width: 100,
-                        'https://image.tmdb.org/t/p/w500/${movieItem.posterPath!}',
-                        fit: BoxFit.cover,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return Center(child: CircularProgressIndicator());
-                        },
-                        errorBuilder: (context, error, stackTrace) {
-                          return Center(
-                              child: Icon(Icons.error, color: Colors.red));
-                        },
-                      )),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 10.0, top: 60, right: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 200,
-                          child: Text(
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            movieItem.title!,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Text("Rating: "),
-                            Icon(
-                              Icons.star,
-                              color: Colors.yellow,
-                            ),
-                            Text(movieItem.voteAverage.toString()),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text("|"),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text("Vote: ${movieItem.voteCount}")
-                          ],
-                        )
-                      ],
+        Container(
+          height:300,
+          child: Stack(
+            children: [
+              _coverImage(movieItem.backdropPath!),
+              _backButton(),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 30.0),
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: Image.network(
+                            height: 100,
+                            width: 100,
+                            'https://image.tmdb.org/t/p/w500/${movieItem.posterPath!}',
+                            fit: BoxFit.cover,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Center(child: CircularProgressIndicator());
+                            },
+                            errorBuilder: (context, error, stackTrace) {
+                              return Center(
+                                  child: Icon(Icons.error, color: Colors.red));
+                            },
+                          )),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 10.0, top: 10, right: 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SizedBox(
+                            width: 200,
+                            child: Text(
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              movieItem.title!,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Text("Rating: "),
+                              Icon(
+                                Icons.star,
+                                color: Colors.yellow,
+                              ),
+                              Text(movieItem.voteAverage.toString()),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("|"),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("Vote: ${movieItem.voteCount}")
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         Expanded(
             child: SingleChildScrollView(
@@ -183,21 +190,24 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   }
 
   Widget _coverImage(String coverImage) {
-    return Image.network(
-      'https://image.tmdb.org/t/p/w500/$coverImage',
-      height: 200,
-      width: double.infinity,
-      fit: BoxFit.cover,
-      loadingBuilder: (context, child, loadingProgress) {
-        if (loadingProgress == null) return child;
-        return SizedBox(
-            height: 200, child: Center(child: CircularProgressIndicator()));
-      },
-      errorBuilder: (context, error, stackTrace) {
-        return SizedBox(
-            height: 200,
-            child: Center(child: Icon(Icons.error, color: Colors.red)));
-      },
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 80),
+      child: Image.network(
+        'https://image.tmdb.org/t/p/w500/$coverImage',
+        height: double.infinity,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) return child;
+          return SizedBox(
+              height: 200, child: Center(child: CircularProgressIndicator()));
+        },
+        errorBuilder: (context, error, stackTrace) {
+          return SizedBox(
+              height: 200,
+              child: Center(child: Icon(Icons.error, color: Colors.red)));
+        },
+      ),
     );
   }
 
