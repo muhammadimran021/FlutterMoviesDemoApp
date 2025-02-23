@@ -1,7 +1,12 @@
 # my_movie_app
 
 A new Flutter project.
-![App Screenshot](screen_shots/home_screen.png)
+![App Screenshot](screen_shots/home_screen.png) 
+## 📸 Screenshots
+
+| Screenshot 1  | Screenshot 2  |
+|--------------|--------------|
+| ![Screenshot 1](screen_shots/home_screen.png) | ![Screenshot 2](screen_shots/details_screen.png) |
 
 
 ## Getting Started
