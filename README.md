@@ -6,8 +6,8 @@
 |--------------|--------------|
 | ![Screenshot 1](screen_shots/home_screen.png) | ![Screenshot 2](screen_shots/details_screen.png) | ![Screenshot 1](screen_shots/movies_list_screen.png) |
 
-| Screenshot 3  | Screenshot 4  |
-|--------------|--------------|
+| Screenshot 4  |
+|--------------|
 | ![Screenshot 2](screen_shots/search_screen.png) |
 
 
