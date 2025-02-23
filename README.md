@@ -1,6 +1,8 @@
 # my_movie_app
 
 A new Flutter project.
+![App Screenshot](screen_shots/home_screen.png)
+
 
 ## Getting Started
 
