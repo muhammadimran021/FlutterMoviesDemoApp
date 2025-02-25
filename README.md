@@ -1,6 +1,13 @@
 # my_movie_app
 
-A new Flutter project.
+## 📸 Screenshots
+
+| Home  | Movie Detail's  | Movies | Search Movie  |
+|--------------|--------------|--------------|--------------|
+| ![Screenshot 1](screen_shots/home_screen.png) | ![Screenshot 2](screen_shots/details_screen.png) | ![Screenshot 3](screen_shots/movies_list_screen.png) | ![Screenshot 4](screen_shots/search_screen.png) |
+
+
+
 
 ## Getting Started
 
