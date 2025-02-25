@@ -8,7 +8,7 @@
 
 | Favorite Movies  |
 |--------------|
-| ![Screenshot 5](screen_shots/favortie_movies_page.png) |
+| ![Screenshot 5](screen_shots/favorite_movies_page.png) |
 
 ## Getting Started
 
