@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:my_movie_app/presentation/screens/HomeScreen/home_screen.dart';
 import 'package:my_movie_app/presentation/screens/SearchPage/Search.dart';
-import 'package:my_movie_app/presentation/screens/movie_detail_screen/MovieDetails.dart';
 
 import '../MoviesList/NowPlayingMovies.dart';
+import '../favorite_movies/FavoriteMoviesPage.dart';
 
 class MainHomePage extends StatefulWidget {
   const MainHomePage({super.key});
@@ -14,7 +14,11 @@ class MainHomePage extends StatefulWidget {
 
 class _MainHomePageState extends State<MainHomePage> {
   var index = 0;
-  final List list = [HomeScreen(), AllMoviesPage(), MovieDetailsScreen()];
+  final List list = [
+    HomeScreen(),
+    AllMoviesPage(),
+    FavoriteMoviesPage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +31,7 @@ class _MainHomePageState extends State<MainHomePage> {
             actions: [
               GestureDetector(
                 onTap: () {
-                  showSearch(
-                      context: context,
-                      delegate: Search()
-                  );
+                  showSearch(context: context, delegate: Search());
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(right: 8.0),

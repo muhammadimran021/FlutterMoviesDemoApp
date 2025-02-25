@@ -4,15 +4,22 @@
 
 import 'dart:convert';
 
+import 'package:hive/hive.dart';
+part 'CreditsRoodModel.g.dart';
+
 CreditsRoodModel creditsRoodModelFromJson(String str) =>
     CreditsRoodModel.fromJson(json.decode(str));
 
 String creditsRoodModelToJson(CreditsRoodModel data) =>
     json.encode(data.toJson());
 
+@HiveType(typeId: 6)
 class CreditsRoodModel {
+  @HiveField(0)
   int? id;
+  @HiveField(1)
   List<Cast>? cast;
+  @HiveField(2)
   List<Cast>? crew;
 
   CreditsRoodModel({
@@ -43,20 +50,35 @@ class CreditsRoodModel {
       };
 }
 
+@HiveType(typeId: 7)
 class Cast {
+  @HiveField(0)
   bool? adult;
+  @HiveField(1)
   int? gender;
+  @HiveField(2)
   int? id;
+  @HiveField(3)
   String? knownForDepartment;
+  @HiveField(4)
   String? name;
+  @HiveField(5)
   String? originalName;
+  @HiveField(6)
   double? popularity;
+  @HiveField(7)
   String? profilePath;
+  @HiveField(8)
   int? castId;
+  @HiveField(9)
   String? character;
+  @HiveField(10)
   String? creditId;
+  @HiveField(11)
   int? order;
+  @HiveField(12)
   String? department;
+  @HiveField(13)
   String? job;
 
   Cast({

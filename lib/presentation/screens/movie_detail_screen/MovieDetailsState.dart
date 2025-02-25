@@ -24,3 +24,10 @@ class ErrorState extends MovieDetailState {
 
   ErrorState({required this.message});
 }
+
+class FavoriteState extends MovieDetailState{
+  final bool isFavorite;
+
+  FavoriteState({required this.isFavorite});
+
+}

@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:my_movie_app/core/OverlayLoader.dart';
+import 'package:my_movie_app/data/models/CreditsRoodModel.dart';
+import 'package:my_movie_app/data/models/MovieDetailRootModel.dart';
 import 'package:my_movie_app/data/models/TopRatedMoviesRootModel.dart';
 import 'package:my_movie_app/domain/use_cases/MovieCreditUseCase.dart';
-import 'package:my_movie_app/domain/use_cases/MovieDetailUseCase.dart';
 import 'package:my_movie_app/presentation/components/CrewListHorizontal.dart';
 import 'package:my_movie_app/presentation/components/MoviesGenresGrid.dart';
 import 'package:my_movie_app/presentation/screens/movie_detail_screen/MovieDetailBlocs.dart';
 import 'package:my_movie_app/presentation/screens/movie_detail_screen/MovieDetailsState.dart';
+
+import 'MovieDetailsEvents.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
   final Result? movieItem;
@@ -25,11 +28,21 @@ class MovieDetailsScreen extends StatefulWidget {
 class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   late final MovieCreditBloc movieCreditBloc;
   late final MovieDetailBloc movieDetailBloc;
+  List<Cast> castList = [];
+  List<Genre> genreList = [];
+  late var isFavoriteMovie = false;
 
   @override
   void initState() {
     movieCreditBloc = GetIt.instance<MovieCreditBloc>();
     movieDetailBloc = GetIt.instance<MovieDetailBloc>();
+    movieDetailBloc.add(GetFavorite(movieId: widget.movieItem!.id.toString()));
+    movieDetailBloc.add(MovieDetailParams(
+        movieId: widget.movieItem!.id.toString(), language: "us-eng"));
+    movieCreditBloc.add(MovieCreditsParams(
+        id: widget.movieItem!.id.toString(),
+        apiKey: "bd9a0f3aac2b3bb637d47a4ab5c5d388",
+        language: "us-en"));
     super.initState();
   }
 
@@ -67,34 +80,51 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 _coverImage(movieItem.backdropPath!, screenHeight),
                 Padding(
                   padding: const EdgeInsets.only(left: 120.0),
-                  child: Column(
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        movieItem.title!,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
+                      Expanded(
+                        flex: 1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              movieItem.title!,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            Row(
+                              children: [
+                                Text("Rating: "),
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.yellow,
+                                ),
+                                Text(movieItem.voteAverage.toString()),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text("|"),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text("Vote: ${movieItem.voteCount}"),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
-                      Row(
-                        children: [
-                          Text("Rating: "),
-                          Icon(
-                            Icons.star,
-                            color: Colors.yellow,
-                          ),
-                          Text(movieItem.voteAverage.toString()),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text("|"),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text("Vote: ${movieItem.voteCount}")
-                        ],
-                      )
+                      Padding(
+                          padding: const EdgeInsets.only(top: 2, right: 8.0),
+                          child: GestureDetector(
+                              onTap: () {
+                                movieDetailBloc.add(MarkFavorite(
+                                    isFavorite: !isFavoriteMovie,
+                                    movieResult: movieItem));
+                              },
+                              child: _favoriteIconBloc())),
                     ],
                   ),
                 ),
@@ -208,7 +238,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   Widget _backButton() {
     return GestureDetector(
         onTap: () {
-          Navigator.pop(context);
+          Navigator.pop(context,true);
         },
         child: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -231,15 +261,10 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
       }
       return true;
     }, builder: (context, state) {
-      if (state is InitialState) {
-        context.read<MovieCreditBloc>().add(MovieCreditsParams(
-            id: movieItem.id.toString(),
-            apiKey: "bd9a0f3aac2b3bb637d47a4ab5c5d388",
-            language: "us-en"));
-      } else if (state is LoadedState) {
+      if (state is LoadedState) {
+        castList = state.creditsRoodModel.cast!;
         return SizedBox(
-            height: 130,
-            child: CrewListHorizontal(castList: state.creditsRoodModel.cast!));
+            height: 130, child: CrewListHorizontal(castList: castList));
       } else if (state is ErrorState) {
         return Text(state.message);
       }
@@ -249,18 +274,35 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
 
   Widget _genre(Result movieItem) {
     return BlocBuilder<MovieDetailBloc, MovieDetailState>(
-        builder: (context, state) {
-      if (state is InitialState) {
-        context.read<MovieDetailBloc>().add(MovieDetailParams(
-            movieId: movieItem.id.toString(), language: "us-eng"));
-      } else if (state is LoadedMovieDetail) {
-        return SizedBox(
-            height: 40,
-            child: MoviesGenresList(genre: state.movieDetailRootModel.genres));
+        buildWhen: (previousState, currentState) {
+      return currentState is LoadedMovieDetail;
+    }, builder: (context, state) {
+      if (state is LoadedMovieDetail) {
+        genreList = state.movieDetailRootModel.genres!;
+        return SizedBox(height: 40, child: MoviesGenresList(genre: genreList));
       } else if (state is ErrorState) {
         return Text(state.message);
       }
+
       return Container();
+    });
+  }
+
+  Widget _favoriteIconBloc() {
+    return BlocBuilder<MovieDetailBloc, MovieDetailState>(
+        buildWhen: (previousState, currentState) {
+      return currentState is FavoriteState;
+    }, builder: (context, state) {
+      if (state is FavoriteState) {
+        isFavoriteMovie = state.isFavorite;
+        return state.isFavorite == true
+            ? Icon(Icons.bookmark)
+            : Icon(Icons.bookmark_outline);
+      }
+      return Icon(
+        Icons.bookmark_outline,
+        size: 30,
+      );
     });
   }
 }

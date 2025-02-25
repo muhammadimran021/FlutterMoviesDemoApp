@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:my_movie_app/data/models/TopRatedMoviesRootModel.dart';
 import 'package:my_movie_app/domain/di/GetIt.dart';
 import 'package:my_movie_app/presentation/screens/HomePage/MainHomePage.dart';
-import 'package:my_movie_app/presentation/screens/HomeScreen/home_screen.dart';
+
+import 'data/models/MovieDetailRootModel.dart';
 
 void main() {
   setUpLocators();
+  _setUpHive();
   runApp(const MyApp());
+}
+
+void _setUpHive() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(MovieDetailRootModelAdapter());
+  Hive.registerAdapter(ResultAdapter());
+  await Hive.openBox("myDb");
 }
 
 class MyApp extends StatelessWidget {
