@@ -6,8 +6,9 @@
 |--------------|--------------|--------------|--------------|
 | ![Screenshot 1](screen_shots/home_screen.png) | ![Screenshot 2](screen_shots/details_screen.png) | ![Screenshot 3](screen_shots/movies_list_screen.png) | ![Screenshot 4](screen_shots/search_screen.png) |
 
-
-
+| Favorite Movies  |
+|--------------|
+| ![Screenshot 5](screen_shots/favortie_movies_page.png) |
 
 ## Getting Started
 
