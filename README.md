@@ -40,6 +40,13 @@ lib/
 └── main.dart              # App entry point
 ```
 
+## 🏆 Future Enhancements
+
+- 🔄 **Infinite scrolling & pagination**
+- 🔥 **Dark mode support**
+- 🗂 **User authentication with Firebase**
+- 🎞 **watchlist feature**
+
 ## 🛠️ Setup & Installation  
 
 ### 1️⃣ Clone the Repository  
