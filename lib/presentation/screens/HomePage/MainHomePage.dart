@@ -14,6 +14,7 @@ class MainHomePage extends StatefulWidget {
 
 class _MainHomePageState extends State<MainHomePage> {
   var index = 0;
+  var toolbarTitle = "Movies";
   final List list = [
     HomeScreen(),
     AllMoviesPage(),
@@ -27,7 +28,7 @@ class _MainHomePageState extends State<MainHomePage> {
           appBar: AppBar(
             leading: Icon(Icons.menu),
             backgroundColor: Colors.grey.shade300,
-            title: Text("Movies"),
+            title: Text(toolbarTitle),
             actions: [
               GestureDetector(
                 onTap: () {
@@ -57,6 +58,7 @@ class _MainHomePageState extends State<MainHomePage> {
                         onTap: () {
                           setState(() {
                             index = 0;
+                            toolbarTitle = "Movies";
                           });
                         },
                         child: Column(children: [
@@ -73,6 +75,7 @@ class _MainHomePageState extends State<MainHomePage> {
                         onTap: () {
                           setState(() {
                             index = 1;
+                            toolbarTitle = "Now Playing";
                           });
                         },
                         child: Column(children: [
@@ -89,6 +92,7 @@ class _MainHomePageState extends State<MainHomePage> {
                         onTap: () {
                           setState(() {
                             index = 2;
+                            toolbarTitle = "Favorite";
                           });
                         },
                         child: Column(children: [
@@ -105,6 +109,7 @@ class _MainHomePageState extends State<MainHomePage> {
                         onTap: () {
                           setState(() {
                             index = 3;
+                            toolbarTitle = "Trending";
                           });
                         },
                         child: Column(children: [

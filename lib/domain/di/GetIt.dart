@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:my_movie_app/ApiService/dio/DioProvider.dart';
 import 'package:my_movie_app/data/repositories/FavoriteMoviesRepository.dart';

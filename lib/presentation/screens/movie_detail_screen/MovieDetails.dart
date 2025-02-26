@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:my_movie_app/Utils/SecureStorageService.dart';
 import 'package:my_movie_app/core/OverlayLoader.dart';
 import 'package:my_movie_app/data/models/CreditsRoodModel.dart';
 import 'package:my_movie_app/data/models/MovieDetailRootModel.dart';
@@ -34,6 +35,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
 
   @override
   void initState() {
+    final apiKey = SecureStorageService.getKey("api_key").toString();
     movieCreditBloc = GetIt.instance<MovieCreditBloc>();
     movieDetailBloc = GetIt.instance<MovieDetailBloc>();
     movieDetailBloc.add(GetFavorite(movieId: widget.movieItem!.id.toString()));
@@ -41,7 +43,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
         movieId: widget.movieItem!.id.toString(), language: "us-eng"));
     movieCreditBloc.add(MovieCreditsParams(
         id: widget.movieItem!.id.toString(),
-        apiKey: "bd9a0f3aac2b3bb637d47a4ab5c5d388",
+        apiKey: apiKey,
         language: "us-en"));
     super.initState();
   }
@@ -238,7 +240,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   Widget _backButton() {
     return GestureDetector(
         onTap: () {
-          Navigator.pop(context,true);
+          Navigator.pop(context, true);
         },
         child: Padding(
           padding: const EdgeInsets.all(10.0),

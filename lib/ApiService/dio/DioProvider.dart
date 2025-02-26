@@ -1,16 +1,25 @@
 import 'package:dio/dio.dart';
+import 'package:my_movie_app/Utils/SecureStorageService.dart';
 
 class DioProvider {
-  final Dio _dio = Dio(BaseOptions(
-    baseUrl: "https://api.themoviedb.org/3/",
-    connectTimeout: const Duration(seconds: 30),
-    receiveTimeout: const Duration(seconds: 30),
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization':
-          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiZDlhMGYzYWFjMmIzYmI2MzdkNDdhNGFiNWM1ZDM4OCIsIm5iZiI6MTY0Njg5NDc0Ni4zMTEsInN1YiI6IjYyMjk5ZTlhZDM0ZWIzMDA2ZDQ0ZGFkYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.n3vNoOwdGoAp7_Cdg_rQaLKWmPouJwQOYG-mVDY68sE',
-    },
-  ));
+  static final DioProvider dioProvider = DioProvider._internal();
+  late Dio dio;
+  late String authKey;
 
-  Dio get dio => _dio;
+  factory DioProvider() => dioProvider;
+
+  DioProvider._internal();
+
+  Future<void> create() async {
+    authKey = (await SecureStorageService.getKey("auth_token")) ?? "";
+    dio = Dio(BaseOptions(
+      baseUrl: "https://api.themoviedb.org/3/",
+      connectTimeout: const Duration(seconds: 30),
+      receiveTimeout: const Duration(seconds: 30),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $authKey',
+      },
+    ));
+  }
 }

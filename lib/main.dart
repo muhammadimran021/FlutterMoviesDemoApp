@@ -1,23 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
-import 'package:my_movie_app/data/models/TopRatedMoviesRootModel.dart';
-import 'package:my_movie_app/domain/di/GetIt.dart';
-import 'package:my_movie_app/presentation/screens/HomePage/MainHomePage.dart';
+import 'package:my_movie_app/ApiService/dio/DioProvider.dart';
+import 'package:my_movie_app/presentation/screens/splash_page/splash_page.dart';
 
-import 'data/models/MovieDetailRootModel.dart';
-
-void main() {
-  setUpLocators();
-  _setUpHive();
-  runApp(const MyApp());
-}
-
-void _setUpHive() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
-  Hive.registerAdapter(MovieDetailRootModelAdapter());
-  Hive.registerAdapter(ResultAdapter());
-  await Hive.openBox("myDb");
+
+  // This is the last thing you need to add.
+  await Firebase.initializeApp();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -40,7 +31,7 @@ class MyApp extends StatelessWidget {
           },
         ),
       ),
-      home: MainHomePage(),
+      home: SplashPage(),
     );
   }
 }
