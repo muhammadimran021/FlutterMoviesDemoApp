@@ -1,4 +1,5 @@
-# my_movie_app
+🎬 Movie App – A Flutter Application
+Movie App is a modern Flutter application that provides movie details using the IMDb API. It follows clean architecture principles and integrates secure storage, state management, and remote configuration to ensure scalability, security, and efficiency.
 
 ## 📸 Screenshots
 
